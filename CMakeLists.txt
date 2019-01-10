@@ -3,4 +3,4 @@ project(untitled4)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(untitled4 main.cpp ClientHandler.h Solver.h Searchable.h State.cpp State.h Searchable.h Searcher.h SearcherAbstruct.h SolveSearch.cpp SolveSearch.h FileCachManger.cpp FileCachManger.h CachManager.h MyPriorityQueue.h)
+add_executable(untitled4 main.cpp ClientHandler.h Searchable.h State.cpp State.h Searcher.h SolveSearch.cpp SolveSearch.h CachManager.h MyPriorityQueue.h MatrixSearchable.cpp MatrixSearchable.h Solver.h SearcherAbstruct.h SolveSearch.h SolveSearch.cpp)
