@@ -35,6 +35,23 @@ public:
     T getState() {
         return this->state;
     }
+
+    double getCost() {
+        return this->cost;
+    }
+
+    bool operator<(State<T> const& s) const{
+        return (this->cost < s.cost) ? true:false;
+    }
+    bool operator>(State<T> const& s) const{
+        return (this->cost > s.cost) ? true:false;
+    }
+    bool operator<=(State<T> const& s) const{
+        return (this->cost <= s.cost) ? true:false;
+    }
+    bool operator>=(State<T> const& s) const{
+        return (this->cost >= s.cost) ? true:false;
+    }
 };
 
 
