@@ -11,13 +11,9 @@
 
 template <class Solution,class T>
 class SearcherAbstruct : public Searcher<Solution,T>{
-    MyPriorityQueue<State<T>> openList;
-    int numEvaluate;
+    MyPriorityQueue<State<T>> openList = new MyPriorityQueue<State<T>>();
+    int numEvaluate =0;
 public:
-    SearcherAbstruct<Solution,T>(){
-        numEvaluate = 0;
-        this->openList = new MyPriorityQueue<State<T>>();
-    }
     virtual Solution search(Searchable<T> s) = 0;
     int getNodEvaluate(){
         return this->numEvaluate;

@@ -6,6 +6,6 @@
 #define UNTITLED4_CLIENTHENDLER_H
 class ClientHandler{
 public:
-    void handleClient()
+    void handleClient();
 };
 #endif //UNTITLED4_CLIENTHENDLER_H
