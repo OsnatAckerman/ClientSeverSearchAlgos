@@ -12,5 +12,6 @@ template <class Solution,class T>
 public:
     virtual int getNodEvaluate() = 0;
     virtual Solution search(Searchable<T> s) =0;
+    virtual ~Searcher() = default;
 };
 #endif //UNTITLED4_SEARCHER_H

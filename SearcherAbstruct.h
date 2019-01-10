@@ -11,7 +11,7 @@
 
 template <class Solution,class T>
 class SearcherAbstruct : public Searcher<Solution,T>{
-    MyPriorityQueue<State<T>> openList = new MyPriorityQueue<State<T>>();
+
     int numEvaluate =0;
 public:
     virtual Solution search(Searchable<T> s) = 0;
@@ -21,7 +21,11 @@ public:
     int OpenListSize(){
         return this->openList.amountOfElement();
     }
+    ~SearcherAbstruct(){
+        delete this->openList;
+    }
 protected:
+    MyPriorityQueue<State<T>> openList = new MyPriorityQueue<State<T>>();
     State<T> popOpenList(){
         numEvaluate++;
         this->openList.pop();

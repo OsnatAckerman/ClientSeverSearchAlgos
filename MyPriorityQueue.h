@@ -11,11 +11,12 @@
 #include <iostream>
 #include <climits>
 #include <sys/param.h>
+#include "HashFuncs.h"
 
 using namespace std;
 template <class Q>
 class MyPriorityQueue{
-    queue<Q> queue;
+    std::queue<Q> queue;
 public:
     MyPriorityQueue<Q>(){
 
@@ -24,13 +25,13 @@ public:
 
         for (int i = 1; i <= this->queue.size(); i++)
         {
-            int min_index = minIndex(queue.size() - i);
+            int min_index = minIndex(int(queue.size() - i));
             insertMinToRear(min_index);
         }
     }
     void insertMinToRear( int min_index) {
         Q min_val;
-        int n = queue.size();
+        unsigned long int n = queue.size();
         for (int i = 0; i < n; i++) {
             Q curr = queue.front();
             queue.pop();
@@ -44,7 +45,7 @@ public:
     int minIndex(int sortedIndex){
         int min_index = -1;
         Q min_val = queue.pop();
-        int n = queue.size();
+        int n =int( queue.size());
         for (int i=0; i<n; i++)
         {
             Q curr = queue.front();
@@ -67,7 +68,21 @@ public:
         this->Sort();
     }
     int amountOfElement(){
-        return this->queue.size();
+        return (int)this->queue.size();
+    }
+
+    Q* find(Q q) {
+        std::queue<Q> temp = queue;
+        for(int i = 0; i < queue.size(); i++) {
+            if(queue.front().equals(q)) {
+                auto x = queue.front();
+                queue = temp;
+                return x;
+            }
+            queue.push(queue.pop());
+        }
+        queue = temp;
+        return nullptr;
     }
 };
 
