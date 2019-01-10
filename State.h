@@ -5,6 +5,11 @@
 #ifndef UNTITLED4_STATE_H
 #define UNTITLED4_STATE_H
 
+#include <iostream>
+#include <unordered_map>
+#include <utility>
+using namespace std;
+
 template<class T>
 class State {
     T state;
@@ -32,12 +37,16 @@ public:
         this->cost = cost;
     }
 
-    T getState() {
+    T getState() const{
         return this->state;
     }
 
-    double getCost() {
+    double getCost() const{
         return this->cost;
+    }
+
+    State<T>* getParent() const{
+        return this->comeFrom;
     }
 
     bool operator<(State<T> const& s) const{
@@ -52,7 +61,16 @@ public:
     bool operator>=(State<T> const& s) const{
         return (this->cost >= s.cost) ? true:false;
     }
+
+    bool operator==(State<T> const& s) const{
+        return (s.getCost() == this->cost && this->state == s.getState() &&
+            this->comeFrom== s.getParent()) ? true: false;
+    }
+
+
 };
+
+
 
 
 
