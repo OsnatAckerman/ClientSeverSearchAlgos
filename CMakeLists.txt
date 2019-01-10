@@ -3,4 +3,4 @@ project(untitled4)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(untitled4 main.cpp ClientHandler.h)
+add_executable(untitled4 main.cpp ClientHandler.h MySerialServer.cpp MySerialServer.h Solver.h Searchable.h State.cpp State.h)
