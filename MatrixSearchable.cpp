@@ -36,6 +36,7 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
         if (up != -1) {
             State<pair<int, int>> s(make_pair(n.getState().first - 1, n.getState().second));
             s.setCost(n.getCost() + up);
+            s.setParent(&n);
             successors.push_back(s);
         }
     }
@@ -45,6 +46,7 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
         if (down != -1) {
             State<pair<int, int>> s(make_pair(n.getState().first + 1, n.getState().second));
             s.setCost(n.getCost() + down);
+            s.setParent(&n);
             successors.push_back(s);
         }
     }
@@ -54,6 +56,7 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
         if (left != -1) {
             State<pair<int, int>> s(make_pair(n.getState().first, n.getState().second - 1));
             s.setCost(n.getCost() + left);
+            s.setParent(&n);
             successors.push_back(s);
         }
     }
@@ -63,6 +66,7 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
         if (right != -1) {
             State<pair<int, int>> s(make_pair(n.getState().first, n.getState().second + 1));
             s.setCost(n.getCost() + right);
+            s.setParent(&n);
             successors.push_back(s);
         }
     }
