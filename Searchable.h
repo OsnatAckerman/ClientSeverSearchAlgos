@@ -13,9 +13,9 @@ using namespace std;
 template<class T>
 class Searchable {
 public:
-    State<T> getInitState();
-    State<T> getGoalState();
-    list<State<T>> getSuccessors(State<T> n);
+    virtual State<T> getInitState() = 0;
+    virtual State<T> getGoalState() = 0;
+    virtual list<State<T>> getSuccessors(State<T> n) = 0;
 
 };
 
