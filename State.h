@@ -11,6 +11,11 @@ class State {
     double cost = 0;
     State<T>* comeFrom = nullptr;
 public:
+
+    explicit State<T>(T state) {
+        this->state = state;
+    }
+
     bool equals(State<T> s) {
         if(this->state == s.state){
             return true;
@@ -22,12 +27,13 @@ public:
         this->comeFrom = p;
     }
 
-    explicit State<T>(T state) {
-        this->state = state;
-    }
 
     void setCost(double cost) {
         this->cost = cost;
+    }
+
+    T getState() {
+        return this->state;
     }
 };
 
