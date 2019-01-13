@@ -79,10 +79,14 @@ public:
                 queue = temp;
                 return x;
             }
-            queue.push(queue.pop());
+            queue.push(queue.front());
+            queue.pop();
         }
         queue = temp;
         return nullptr;
+    }
+    Q* front(){
+        return this->queue->front();
     }
 };
 

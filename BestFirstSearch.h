@@ -13,7 +13,7 @@ template <class T>
 class BestFirstSearch : public  SearcherAbstruct<vector<State<pair<int,int>>>,T>{
     unordered_set<State<pair<int,int>>>* closed = new unordered_set<State<pair<int,int>>>();
     vector<State<pair<int,int>>> traceBack(State<pair<int,int>> goalState);
-
+    void updatePriority(State<pair<int,int>> s);
 public:
     vector<State<pair<int,int>>> search(Searchable<T> searchable);
 };

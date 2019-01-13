@@ -50,16 +50,16 @@ public:
     }
 
     bool operator<(State<T> const& s) const{
-        return (this->cost < s.cost) ? true:false;
+        return (this->cost < s.cost);
     }
     bool operator>(State<T> const& s) const{
-        return (this->cost > s.cost) ? true:false;
+        return (this->cost > s.cost);
     }
     bool operator<=(State<T> const& s) const{
-        return (this->cost <= s.cost) ? true:false;
+        return (this->cost <= s.cost);
     }
     bool operator>=(State<T> const& s) const{
-        return (this->cost >= s.cost) ? true:false;
+        return (this->cost >= s.cost);
     }
 
     bool operator==(State<T> const& s) const{
