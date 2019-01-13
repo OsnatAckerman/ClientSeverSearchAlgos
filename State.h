@@ -64,7 +64,7 @@ public:
 
     bool operator==(State<T> const& s) const{
         return (s.getCost() == this->cost && this->state == s.getState() &&
-            this->comeFrom== s.getParent()) ? true: false;
+            this->comeFrom== s.getParent());
     }
 
 
