@@ -6,7 +6,7 @@
 #define UNTITLED4_MYPRIORITYQUEUE_H
 
 
-#include "State.h"
+#include "Step.h"
 #include <queue>
 #include <iostream>
 #include <climits>
@@ -16,7 +16,7 @@
 using namespace std;
 template <class Q>
 class MyPriorityQueue{
-    std::queue<Q> queue;
+    std::deque<Q> queue;
 public:
     MyPriorityQueue<Q>(){
 
@@ -34,59 +34,50 @@ public:
         unsigned long int n = queue.size();
         for (int i = 0; i < n; i++) {
             Q curr = queue.front();
-            queue.pop();
+            queue.pop_front();
             if (i != min_index)
-                queue.push(curr);
+                queue.push_back(curr);
             else
                 min_val = curr;
         }
-        queue.push(min_val);
+        queue.push_back(min_val);
     }
     int minIndex(int sortedIndex){
         int min_index = -1;
-        Q min_val = queue.pop();
+        Q min_val = queue.front();
         int n =int( queue.size());
         for (int i=0; i<n; i++)
         {
             Q curr = queue.front();
-            queue.pop();  // This is dequeue() in C++ STL
+            queue.pop_front();  // This is dequeue() in C++ STL
             if (curr <= min_val && i <= sortedIndex)
             {
                 min_index = i;
                 min_val = curr;
             }
-            queue.push(curr);  // This is enqueue() in
+            queue.push_back(curr);  // This is enqueue() in
             // C++ STL
         }
         return min_index;
     }
     void pop(){
-        this->queue.pop();
+        this->queue.pop_front();
     }
-    void push(Q state){
-        queue.push(state);
+    void push(const Q& state){
+        queue.push_back(state);
         this->Sort();
     }
     int amountOfElement(){
         return (int)this->queue.size();
     }
 
-    Q* find(Q q) {
-        std::queue<Q> temp = queue;
-        for(int i = 0; i < queue.size(); i++) {
-            if(queue.front().equals(q)) {
-                auto x = queue.front();
-                queue = temp;
-                return x;
-            }
-            queue.push(queue.front());
-            queue.pop();
-        }
-        queue = temp;
-        return nullptr;
+    Q* find(const Q& q) {
+        auto iter = std::find(queue.begin(), queue.end(), q);
+        return (iter != queue.end()) ? &*iter: nullptr;
     }
-    Q* front(){
-        return this->queue->front();
+
+    Q& front(){
+        return this->queue.front();
     }
 };
 

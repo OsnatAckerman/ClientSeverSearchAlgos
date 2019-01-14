@@ -6,35 +6,30 @@
 #define UNTITLED4_HASHFUNCS_H
 
 #include <cstddef>
-#include "State.h"
+#include "Step.h"
 #include <string>
 #include "To_String.h"
 
-namespace std
-{
-/*    template <>
-    struct hash<State<pair<int,int>>>
-    {
-        size_t operator()(const State<pair<int,int>>& s) const{
-            string concat = to_string(s.getState().first) + to_string(s.getState().second) +
-                    to_string(s.getCost()) + to_string(s.getParent());
-            return hash<string>()(concat);
-        }
-    };*/
+using cell = pair<int,int>;
 
-    template <class T>
-    struct hash<State<T>>
-    {
-        size_t operator()(const State<T>& s) const{
-            string concat = to_string(s.getState())  +
-                            to_string(s.getCost());
-            if(s.getParent() != nullptr) {
-               concat += to_string(s.getParent());
-            }
-            return hash<string>()(concat);
+namespace std {
+    template<class State>
+    struct hash<Step<State>*> {
+        size_t operator()(const Step<State>* s) const {
+            return hash<State>()(s->getState());
+        }
+    };
+
+    template<>
+    struct hash<cell> {
+        size_t operator()(const cell &c) const {
+            string cellString = to_string(c.first) + to_string(c.second);
+            return hash<string>()(cellString);
         }
     };
 }
+
+
 
 
 #endif //UNTITLED4_HASHFUNCS_H

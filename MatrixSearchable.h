@@ -8,17 +8,24 @@
 
 #include <vector>
 #include "Searchable.h"
-class MatrixSearchable: public Searchable<pair<int,int>> {
+#include "StreamOverload.h"
+
+using cell = pair<int,int>;
+
+class MatrixSearchable: public Searchable<cell> {
     vector<vector<int>> matrix;
-    State<pair<int,int>> initState;
-    State<pair<int,int>> goalState;
+    cell initState;
+    cell goalState;
 
 public:
-    MatrixSearchable(vector<vector<int>> matrix, State<pair<int,int>> init, State<pair<int,int>> goal);
-    State<pair<int,int>> getInitState() override;
+    MatrixSearchable(const vector<vector<int>>& matrix, const cell& init, const cell& goal);
+    MatrixSearchable() = default;
+    Step<cell> getInitState() override;
 
-    State<pair<int,int>> getGoalState() override;
-    list<State<pair<int,int>>> getSuccessors(State<pair<int,int>> n) override;
+    Step<cell> getGoalState() override;
+    list<Step<cell>> getSuccessors( Step<cell>& n) override;
+    friend istream& operator>>(istream& is, MatrixSearchable& m);
+    friend ostream& operator<<(ostream& os, const MatrixSearchable& m);
 };
 
 

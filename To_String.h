@@ -6,22 +6,27 @@
 #define UNTITLED4_TO_STRING_H
 
 #include <string>
-#include "State.h"
+#include "Step.h"
 
-namespace std {
 
-    template<class T>
-    string to_string(State<T> *state) {
+/*    template<class T>
+    string to_string(Step<T> *state) {
         string concat = to_string(state->getState()) + "," + to_string(state->getCost());
         if(state->getParent() != nullptr) {
             concat += ","+to_string(state->getParent()->getState());
         }
         return concat;
+    }*/
+
+    //for the hash function of Step, to string on the pair as his State.
+    inline string to_string(pair<int, int> cell) {
+        string s ="pair:";
+        return s += to_string(cell.first) + "," + to_string(cell.second);
     }
 
-    template <class M, class S>
-    string to_string(pair<M, S> pair) {
-        return to_string(pair.first) + "," + to_string(pair.second);
+
+    inline string to_string(const string& s) {
+        return s;
     }
-}
+
 #endif //UNTITLED4_TO_STRING_H
