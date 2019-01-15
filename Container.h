@@ -14,5 +14,6 @@ public:
     virtual void push(const E& element) = 0;
 
     virtual  E& look() = 0;
+    virtual bool empty() = 0 ;
 };
 #endif //UNTITLED4_CONTAINER_H

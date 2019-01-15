@@ -11,16 +11,19 @@ using namespace std;
 #include "Container.h"
 template <class E>
 class ContainerQueue : public Container<E>{
-    queue<E> queue;
+    queue<E> queue1;
 public:
-     void pop(){
-         this->queue.pop();
+     void pop() override{
+         this->queue1.pop();
      }
-     void push(const E& element){
-         this->push(element);
+     void push(const E& element) override{
+         this->queue1.push(element);
      }
-     E& look(){
-        return this->queue.front();
+     E& look() override{
+        return this->queue1.front();
+     }
+     bool empty() override{
+         return this->queue1.empty();
      }
 };
 

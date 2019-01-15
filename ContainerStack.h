@@ -21,6 +21,9 @@ public:
     E& look(){
         return this->stack1.top();
     }
+    bool empty() {
+        return this->stack1.empty();
+    }
 };
 
 

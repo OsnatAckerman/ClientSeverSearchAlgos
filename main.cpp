@@ -10,6 +10,7 @@
 #include "CacheManager.h"
 #include "MyParallelServer.h"
 #include "Server.h"
+#include "Bfs.h"
 
 
 using namespace std;
@@ -19,7 +20,7 @@ int main() {
     CacheManager<MatrixSearchable, vector<cell>>* cm =
             new FileCacheManager<MatrixSearchable, vector<cell>>("cachFile.txt");
 
-    Searcher<cell>* bfs = new BestFirstSearch<cell>();
+    Searcher<cell>* bfs = new Bfs<cell>();
 
     ClientHandler* clientHandler = new MyMatrixClientHandler(bfs, cm);
 
