@@ -1,0 +1,65 @@
+
+
+#include "MyParallelServer.h"
+#include "ClientHandle.h"
+
+void* start(void *myParams){
+    struct arg_struct *my_data;
+    my_data = (arg_struct *) myParams;
+    my_data->clientHandle->handleClient(my_data->new_sock);
+}
+void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
+    this->port = port;
+    this->clientHandler = clientHandler;
+    pthread_t thread;
+    int rc;
+    int  new_socket, valread;
+    struct sockaddr_in address;
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(port);
+    bind(server_fd, (struct sockaddr *) &address, sizeof(address));
+    int addrlen = sizeof(address);
+    //!=stop
+    while (true) {
+        listen(server_fd, 5);
+
+        timeval timeout;
+        timeout.tv_sec = 50;
+        timeout.tv_usec = 0;
+
+        setsockopt(server_fd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
+        (new_socket = accept(server_fd, (struct sockaddr *) &address,
+                             (socklen_t *) &addrlen));
+        if (new_socket < 0) {
+            if (errno == EWOULDBLOCK) {
+                cout << "timeout!" << endl;
+                //exit(2);
+                break;
+            } else {
+                cout<<"jj"<<endl;
+                //perror("accept");
+                // exit(EXIT_FAILURE);
+                break;
+            }
+        }
+
+        struct arg_struct *my_data=new struct arg_struct() ;
+        my_data->new_sock = new_socket;
+        my_data->clientHandle = this->clientHandler;
+        rc = pthread_create(&thread, nullptr, start, my_data);
+        if (rc) {
+            cout << "Error! unable to create thread";
+            exit(1);
+        }
+        this->victor.push_back(thread);
+    }
+}
+
+void MyParallelServer:: stop(){
+    for (pthread_t thread:this->victor) {
+        pthread_join(thread,NULL);
+    }
+    close(this->server_fd);
+}
