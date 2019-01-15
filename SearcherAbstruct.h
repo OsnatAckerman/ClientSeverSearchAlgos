@@ -12,25 +12,25 @@
 template <class State>
 class SearcherAbstruct : public Searcher<State>{
 
-    int numEvaluate =0;
 public:
     int getNodEvaluate(){
         return this->numEvaluate;
     }
     int OpenListSize(){
-        return this->openList->amountOfElement();
+        return this->openList.amountOfElement();
     }
     ~SearcherAbstruct(){
-        delete this->openList;
     }
+
+
 protected:
-    MyPriorityQueue<Step<State>>* openList = new MyPriorityQueue<Step<State>>();
-    Step<State> popOpenList(){
+    int numEvaluate =0;
+/*    Step<State> popOpenList(){
         numEvaluate++;
-        auto x = this->openList->front();
-        this->openList->pop();
+        auto x = this->openList.front();
+        this->openList.pop();
         return x;
-    }
+    }*/
 
 };
 

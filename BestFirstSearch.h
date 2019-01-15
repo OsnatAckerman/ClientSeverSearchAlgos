@@ -19,9 +19,8 @@ namespace std {
 
 template <class State>
 class BestFirstSearch : public  SearcherAbstruct<State>{
-    unordered_set<Step<State>*>* closed = new unordered_set<Step<State>*>();
 
-    vector<State> traceBack(const Step<State>& goalState){
+    vector<State> traceBack(const Step<State>& goalState, const unordered_set<Step<State>*>& closed) const{
         vector<State> traceSolution;
         const Step<State>* current = &goalState;
         while(current != nullptr) {
@@ -29,40 +28,49 @@ class BestFirstSearch : public  SearcherAbstruct<State>{
             current = current->getParent();
         }
         reverse(traceSolution.begin(), traceSolution.end());
+        if(!closed.empty()) {
+            for (auto &x: closed) {
+                delete x;
+            }
+        }
         return traceSolution;
     }
 
 
 
-    void updatePriority(Step<State>& s){
-        Step<State>* findS = this->openList->find(s);
+    void updatePriority(Step<State>& s, MyPriorityQueue<Step<State>>& openList) const{
+        Step<State>* findS = openList.find(s);
         findS->setParent(*s.getParent());
         findS->setCost(s.getCost());
-        this->openList->Sort();
+        openList.Sort();
     }
 
 
 
 public:
-    vector<State> search(Searchable<State>* searchable){
-        this->openList->push(searchable->getInitState());
-        while(this->OpenListSize() > 0) {
-            Step<State> n = this->popOpenList();
+    vector<State> search(Searchable<State>* searchable) const{
+        unordered_set<Step<State>*> closed ;
+        MyPriorityQueue<Step<State>> openList;
+        openList.push(searchable->getInitState());
+        while(openList.amountOfElement() > 0) {
+            Step<State> n = openList.front();
+            //this->numEvaluate++;
+            openList.pop();
             auto pointerToN = new Step<State>(n);
-            this->closed->insert(pointerToN);
+            closed.insert(pointerToN);
             if(*pointerToN == searchable->getGoalState()) {
-                return traceBack(*pointerToN);
+                return traceBack(*pointerToN, closed);
             }
             list<Step<State>> successors = searchable->getSuccessors(*pointerToN);
             for(Step<State>& s: successors) {
-                if(closed->find(&s) != closed->end()){
+                if(closed.find(&s) != closed.end()){
                     continue;
-                } else if(Step<State>* spos = this->openList->find(s)){
+                } else if(Step<State>* spos = openList.find(s)){
                     if( s.getCost() < spos->getCost()) {
-                        this->updatePriority(s);
+                        updatePriority(s, openList);
                     }
                 } else {
-                    this->openList->push(s);
+                    openList.push(s);
                 }
             }
         }
@@ -71,12 +79,7 @@ public:
     }
 
     ~BestFirstSearch(){
-        if(closed) {
-            for (auto &x: *closed) {
-                delete x;
-            }
-        }
-        delete closed;
+
     }
 };
 

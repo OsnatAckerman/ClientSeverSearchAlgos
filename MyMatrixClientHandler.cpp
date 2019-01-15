@@ -22,7 +22,7 @@ void MyMatrixClientHandler:: handleClient(int sock_id) {
 
     char buffer[BUFFER_SIZE+1];
     string buff2 = "";
-    while(buff2.find("end")!=string::npos) {
+    while(buff2.find("end")==string::npos) {
         ssize_t n = read(sock_id, buffer, BUFFER_SIZE);
         if (n <= 0) {
             perror("ERROR read from socket");
@@ -56,31 +56,31 @@ MatrixSearchable MyMatrixClientHandler:: parseBuffer(const string& buffer) {
     while(getline(ss, line)) {
         lines_extracted.push_back(line);
     }
-    if(lines_extracted.size()<3) {
+    if(lines_extracted.size()<4) {
         throw "invalid input from client";
     }
     vector<vector<int>> matrix;
-    for(int i = 0; i < lines_extracted.size()-2; i++) {
+    for(int i = 0; i < lines_extracted.size()-3; i++) {
         string current_line = lines_extracted[i];
         stringstream liness(current_line);
         int num;
         vector<int> row;
-        while (ss >> num)
+        while (liness >> num)
         {
             row.push_back(num);
 
-            if (ss.peek() == ',')
-                ss.ignore();
+            if (liness.peek() == ',')
+                liness.ignore();
         }
         matrix.push_back(row);
     }
     cell init, goal;
-    stringstream initss( lines_extracted[lines_extracted.size()-2]);
+    stringstream initss( lines_extracted[lines_extracted.size()-3]);
     int first, second;
     char comma;
     initss>>first>>comma>>second;
     init = make_pair(first,second);
-    stringstream goalss(lines_extracted[lines_extracted.size()-1]);
+    stringstream goalss(lines_extracted[lines_extracted.size()-2]);
     goalss>>first>>comma>>second;
     goal = make_pair(first,second);
     return MatrixSearchable(matrix, init, goal);

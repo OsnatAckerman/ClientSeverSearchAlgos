@@ -26,6 +26,7 @@ public:
     list<Step<cell>> getSuccessors( Step<cell>& n) override;
     friend istream& operator>>(istream& is, MatrixSearchable& m);
     friend ostream& operator<<(ostream& os, const MatrixSearchable& m);
+    bool operator==(const MatrixSearchable& m) const;
 };
 
 

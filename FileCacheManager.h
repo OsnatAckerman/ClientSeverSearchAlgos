@@ -11,7 +11,7 @@
 #include "To_String.h"
 
 template <class Problem, class Solution>
-class FileCachManager: public CacheManager< Problem, Solution> {
+class FileCacheManager: public CacheManager< Problem, Solution> {
     //file format:
     //each line- string of problem:string of solution
 
@@ -56,7 +56,7 @@ class FileCachManager: public CacheManager< Problem, Solution> {
         ofstream writeToFile;
         writeToFile.open(this->fileName, ios::trunc);
         if(!writeToFile.is_open()) {
-            throw "can't open FileCachManager file";
+            throw "can't open FileCacheManager file";
         }
         for(const auto& keyVal: this->map) {
             writeToFile << keyVal.first << ":" << keyVal.second << endl;
@@ -67,13 +67,13 @@ class FileCachManager: public CacheManager< Problem, Solution> {
 
 
 public:
-    explicit FileCachManager<Problem,Solution>(const string& file_name) {
+    explicit FileCacheManager<Problem,Solution>(const string& file_name) {
         this->fileName = file_name;
         pthread_mutex_init(&this->tex, nullptr);
     }
 
 
-    ~FileCachManager(){
+    ~FileCacheManager(){
         saveMap();
         pthread_mutex_destroy(&this->tex);
     }

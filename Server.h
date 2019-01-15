@@ -7,8 +7,12 @@
 
 #include "MyMatrixClientHandler.h"
 
-class Server{
-    void open(int port, MyMatrixClientHandler clientHandle);
-    void stop();
-};
+namespace server_side{
+    class Server{
+    public:
+        virtual void open(int port, ClientHandler* c) = 0;
+        virtual void stop() = 0;
+    };
+}
+
 #endif //UNTITLED4_SERVER_H

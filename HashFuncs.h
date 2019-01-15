@@ -27,6 +27,20 @@ namespace std {
             return hash<string>()(cellString);
         }
     };
+
+    template<>
+    struct hash<MatrixSearchable> {
+        size_t operator()(const MatrixSearchable& m) const {
+            stringstream ss;
+            ss<<m;
+            string ans = "";
+            string line;
+            while(getline(ss,line)) {
+                ans+=line;
+            }
+            return hash<string>()(ans);
+        }
+    };
 }
 
 

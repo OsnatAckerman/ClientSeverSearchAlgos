@@ -23,16 +23,16 @@ using namespace std;
 
 struct arg_struct {
     int new_sock;
-    ClientHandle* clientHandle;
+    ClientHandler* clientHandle;
 };
 
-class MyParallelServer : public Server{
+class MyParallelServer : public server_side::Server{
     int port;
-    ClientHandle* clientHandler;
-    vector<pthread_t> victor;
+    ClientHandler* clientHandler;
+    vector<pthread_t> vectorPthread;
     int server_fd;
 public:
-    void open(int port, ClientHandle* clientHandler) override;
+    void open(int port, ClientHandler* clientHandler) override;
 
     void stop() override;
 

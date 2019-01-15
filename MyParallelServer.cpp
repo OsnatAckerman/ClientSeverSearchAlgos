@@ -1,14 +1,17 @@
 
 
 #include "MyParallelServer.h"
-#include "ClientHandle.h"
+#include "ClientHandler.h"
 
 void* start(void *myParams){
     struct arg_struct *my_data;
     my_data = (arg_struct *) myParams;
     my_data->clientHandle->handleClient(my_data->new_sock);
+    close(my_data->new_sock);
 }
-void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
+
+
+void MyParallelServer:: open(int port, ClientHandler* clientHandler) {
     this->port = port;
     this->clientHandler = clientHandler;
     pthread_t thread;
@@ -39,11 +42,11 @@ void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
         if (new_socket < 0) {
             if (errno == EWOULDBLOCK) {
                 cout << "timeout!" << endl;
-                //exit(2);
                 break;
             } else {
-                perror("accept");
-                 exit(EXIT_FAILURE);
+                //perror("accept");
+                 //exit(EXIT_FAILURE);
+                 break;
             }
         }
 
@@ -55,13 +58,13 @@ void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
             cout << "Error! unable to create thread";
             exit(1);
         }
-        this->victor.push_back(thread);
+        this->vectorPthread.push_back(thread);
         counterClient++;
     }
 }
 
 void MyParallelServer:: stop(){
-    for (pthread_t thread:this->victor) {
+    for (pthread_t thread:this->vectorPthread) {
         pthread_join(thread,NULL);
     }
     close(this->server_fd);

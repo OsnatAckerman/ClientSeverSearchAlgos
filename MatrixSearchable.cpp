@@ -110,3 +110,7 @@ ostream& operator<<(ostream& os,const MatrixSearchable& m) {
     os<<m.goalState<<endl;
     return os;
 }
+
+bool MatrixSearchable:: operator==(const MatrixSearchable& m) const{
+    return (this->matrix == m.matrix && this->initState == m.initState && this->goalState == m.goalState);
+}
