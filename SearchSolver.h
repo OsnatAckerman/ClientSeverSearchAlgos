@@ -9,10 +9,10 @@
 #include "Solver.h"
 #include "Searcher.h"
 template <class State>
-class SolveSearch : public Solver<Searchable<State>, vector<State>>{
+class SearchSolver : public Solver<Searchable<State>, vector<State>>{
     Searcher<State>* searcher;
 public:
-    explicit SolveSearch(Searcher<State>* searcher) {
+    explicit SearchSolver(Searcher<State>* searcher) {
         this->searcher = searcher;
     }
      vector<State> solve(Searchable<State>* searchable) override {

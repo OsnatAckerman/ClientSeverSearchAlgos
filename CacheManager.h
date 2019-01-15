@@ -4,7 +4,7 @@
 
 #ifndef UNTITLED4_CACHMANGER_H
 #define UNTITLED4_CACHMANGER_H
-template <class Solution,class Problem>
+template <class Problem,class Solution>
 class CacheManager{
 public:
     virtual bool ifExist(const Problem& p)=0;

@@ -10,14 +10,18 @@
 #include "CacheManager.h"
 #include "To_String.h"
 
-template <class Solution, class Problem>
-class FileCachManager: public CacheManager<Solution, Problem> {
+template <class Problem, class Solution>
+class FileCachManager: public CacheManager< Problem, Solution> {
     //file format:
     //each line- string of problem:string of solution
 
     unordered_map<Problem, Solution> map;
     string fileName;
     bool isLoaded = false;
+    pthread_mutex_t tex;
+
+
+
     void loadMap(){
         if(isLoaded) {
             return;
@@ -31,12 +35,21 @@ class FileCachManager: public CacheManager<Solution, Problem> {
                 problem = line.substr(0, line.find(':'));
                 line.erase(0, line.find(':')+1);
                 solution = line;
-                map[problem] = solution;
+
+                stringstream ssp(problem);
+                stringstream sss(solution);
+                Problem prob;
+                Solution sol;
+                ssp>>prob;
+                sss>>sol;
+
+                map[prob] = sol;
             }
         }
         isLoaded = true;
     }
     void saveMap(){
+        pthread_mutex_lock(&this->tex);
         if(!isLoaded) {
             loadMap();
         }
@@ -48,40 +61,52 @@ class FileCachManager: public CacheManager<Solution, Problem> {
         for(const auto& keyVal: this->map) {
             writeToFile << keyVal.first << ":" << keyVal.second << endl;
         }
+        pthread_mutex_unlock(&this->tex);
+
     }
 
 
 public:
-    explicit FileCachManager<Solution,Problem>(string file_name) {
+    explicit FileCachManager<Problem,Solution>(const string& file_name) {
         this->fileName = file_name;
+        pthread_mutex_init(&this->tex, nullptr);
     }
 
 
     ~FileCachManager(){
         saveMap();
+        pthread_mutex_destroy(&this->tex);
     }
 
 
     bool ifExist(const Problem& p) override {
+        pthread_mutex_lock(&this->tex);
         if(!isLoaded) {
             loadMap();
         }
-        if(map.find(p) != map.end()) {
-            return true;
-        }
-        return false;
+        bool res;
+        res =(map.find(p) != map.end())? true:false;
+        pthread_mutex_unlock(&this->tex);
+        return res;
+
     }
 
 
     void saveSolution(const Problem& p,const Solution& s) override {
+        pthread_mutex_lock(&this->tex);
         map[p] = s;
+        pthread_mutex_unlock(&this->tex);
+
     }
 
     Solution getSolution(const Problem& p) override {
+        pthread_mutex_lock(&this->tex);
         if(!isLoaded) {
             loadMap();
         }
-        return map[p];
+        Solution s = map[p];
+        pthread_mutex_unlock(&this->tex);
+        return s;
     }
 
 };

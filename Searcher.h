@@ -6,6 +6,7 @@
 #define UNTITLED4_SEARCHER_H
 
 #include "Searchable.h"
+#include <vector>
 using namespace std;
 
 template <class State>
