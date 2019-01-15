@@ -18,11 +18,14 @@
 #include <iostream>
 #include <vector>
 #include <netinet/in.h>
+#include <pthread.h>
 using namespace std;
+
 struct arg_struct {
     int new_sock;
     ClientHandle* clientHandle;
 };
+
 class MyParallelServer : public Server{
     int port;
     ClientHandle* clientHandler;
