@@ -9,26 +9,27 @@
 #include "Searcher.h"
 #include "MyPriorityQueue.h"
 
-template <class Solution,class T>
-class SearcherAbstruct : public Searcher<Solution,T>{
+template <class State>
+class SearcherAbstruct : public Searcher<State>{
 
     int numEvaluate =0;
 public:
-    virtual Solution search(Searchable<T> s) = 0;
     int getNodEvaluate(){
         return this->numEvaluate;
     }
     int OpenListSize(){
-        return this->openList.amountOfElement();
+        return this->openList->amountOfElement();
     }
     ~SearcherAbstruct(){
         delete this->openList;
     }
 protected:
-    MyPriorityQueue<State<T>> openList = new MyPriorityQueue<State<T>>();
-    State<T> popOpenList(){
+    MyPriorityQueue<Step<State>>* openList = new MyPriorityQueue<Step<State>>();
+    Step<State> popOpenList(){
         numEvaluate++;
-        this->openList.pop();
+        auto x = this->openList->front();
+        this->openList->pop();
+        return x;
     }
 
 };

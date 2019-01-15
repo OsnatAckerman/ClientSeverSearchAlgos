@@ -6,16 +6,17 @@
 #define UNTITLED4_SEARCHABLE_H
 
 #include <list>
-#include "State.h"
+#include "Step.h"
 
 using namespace std;
 
-template<class T>
+template<class State>
 class Searchable {
 public:
-    virtual State<T> getInitState() = 0;
-    virtual State<T> getGoalState() = 0;
-    virtual list<State<T>> getSuccessors(State<T> n) = 0;
+    virtual Step<State> getInitState() = 0;
+    virtual Step<State> getGoalState() = 0;
+    virtual list<Step<State>> getSuccessors(Step<State>& n) = 0;
+    virtual ~Searchable()= default;
 
 };
 

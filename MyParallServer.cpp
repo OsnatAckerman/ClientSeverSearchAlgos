@@ -51,6 +51,6 @@ void MyParallServer:: open(int port, ClientHandle clientHandle){
         args->socket_args = newsockfd;
         args->c = clientHandle;
          pthread_t pthread;
-        pthread_create(pthread, nullptr, thread_func, args);
+        //pthread_create(pthread, nullptr, thread_func, args);
     }
 }

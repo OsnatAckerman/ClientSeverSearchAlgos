@@ -4,21 +4,23 @@
 
 #include "MatrixSearchable.h"
 
+using cell = pair<int,int>;
 
-MatrixSearchable::MatrixSearchable(vector<vector<int>> matrix, State<pair<int,int>> init, State<pair<int,int>> goal):
-    initState(State<pair<int,int>>(make_pair(0,0))), goalState(State<pair<int,int>>(make_pair(0,0))){
+
+MatrixSearchable::MatrixSearchable(const vector<vector<int>>& matrix,
+        const cell& init, const cell& goal){
 
     this->goalState = goal;
     this->initState = init;
     this->matrix = matrix;
 }
 
-State<pair<int,int>> MatrixSearchable:: getInitState()  {
-    return this->initState;
+Step<cell> MatrixSearchable:: getInitState()  {
+    return Step<cell>(initState);
 }
 
-State<pair<int,int>> MatrixSearchable:: getGoalState() {
-    return this->goalState;
+Step<cell> MatrixSearchable:: getGoalState() {
+    return Step<cell>(goalState);
 }
 
 /**
@@ -27,16 +29,16 @@ State<pair<int,int>> MatrixSearchable:: getGoalState() {
  * @param n - current state
  * @return list<State<pair<int,int>>> successors
  */
-list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>> n) {
-    list<State<pair<int,int>>> successors;
+list<Step<cell>> MatrixSearchable::getSuccessors(Step<cell>& n) {
+    list<Step<pair<int,int>>> successors;
     //if there is upper neighbor
     if(n.getState().first > 0) {
         int up = matrix[n.getState().first - 1][n.getState().second];
         //if neighbor is reachable
         if (up != -1) {
-            State<pair<int, int>> s(make_pair(n.getState().first - 1, n.getState().second));
+            Step<pair<int, int>> s(make_pair(n.getState().first - 1, n.getState().second));
             s.setCost(n.getCost() + up);
-            s.setParent(&n);
+            s.setParent(n);
             successors.push_back(s);
         }
     }
@@ -44,9 +46,9 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
     if(n.getState().first < this->matrix.size()-1) {
         int down = matrix[n.getState().first + 1][n.getState().second];
         if (down != -1) {
-            State<pair<int, int>> s(make_pair(n.getState().first + 1, n.getState().second));
+            Step<pair<int, int>> s(make_pair(n.getState().first + 1, n.getState().second));
             s.setCost(n.getCost() + down);
-            s.setParent(&n);
+            s.setParent(n);
             successors.push_back(s);
         }
     }
@@ -54,9 +56,9 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
     if(n.getState().second > 0) {
         int left = matrix[n.getState().first][n.getState().second - 1];
         if (left != -1) {
-            State<pair<int, int>> s(make_pair(n.getState().first, n.getState().second - 1));
+            Step<pair<int, int>> s(make_pair(n.getState().first, n.getState().second - 1));
             s.setCost(n.getCost() + left);
-            s.setParent(&n);
+            s.setParent(n);
             successors.push_back(s);
         }
     }
@@ -64,11 +66,47 @@ list<State<pair<int,int>>> MatrixSearchable::getSuccessors(State<pair<int, int>>
     if(n.getState().second < this->matrix.size()-1) {
         int right = matrix[n.getState().first][n.getState().second + 1];
         if (right != -1) {
-            State<pair<int, int>> s(make_pair(n.getState().first, n.getState().second + 1));
+            Step<pair<int, int>> s(make_pair(n.getState().first, n.getState().second + 1));
             s.setCost(n.getCost() + right);
-            s.setParent(&n);
+            s.setParent(n);
             successors.push_back(s);
         }
     }
     return successors;
+}
+
+istream& operator>>(istream& is, MatrixSearchable& m) {
+    size_t numRows;
+    is>>numRows;
+    vector<vector<int>> tempMatrix;
+    tempMatrix.reserve(numRows);
+    for(int i = 0; i < numRows; i++) {
+        vector<int> row;
+        is>>row;
+        tempMatrix.push_back(row);
+    }
+    cell init, goal;
+    is>>init;
+    is>>goal;
+    m = MatrixSearchable(tempMatrix, init, goal);
+    return is;
+}
+
+
+
+
+ostream& operator<<(ostream& os,const MatrixSearchable& m) {
+
+    //numRows
+    os<<m.matrix.size()<<endl;
+
+    //all vectors of the rows in new line.
+    for(int i = 0; i < m.matrix.size(); i++) {
+        os<<m.matrix[i]<<endl;
+    }
+    //initial state
+    os<<m.initState<<endl;
+    //goal state
+    os<<m.goalState<<endl;
+    return os;
 }

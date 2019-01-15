@@ -8,11 +8,16 @@
 
 #include "Solver.h"
 #include "Searcher.h"
-template <class Solution,class T>
-class SolveSearch : public Solver<Solution,Searchable<T>>{
-    Searcher<Solution,Searchable<T>> searcher;
+template <class State>
+class SolveSearch : public Solver<Searchable<State>, vector<State>>{
+    Searcher<State>* searcher;
 public:
-    Solution solve(Searchable<T> searchable) override;
+    explicit SolveSearch(Searcher<State>* searcher) {
+        this->searcher = searcher;
+    }
+     vector<State> solve(Searchable<State>* searchable) override {
+        return this->searcher->search(searchable);
+    }
 };
 
 
