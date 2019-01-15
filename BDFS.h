@@ -10,6 +10,15 @@
 template <class State,class Con>
 class BDFS :public SearcherAbstruct<State>{
 public:
+    bool isVisited(Step<State> *state,const vector<Step<State>*>& visited) const {
+        for (auto& s : visited) {
+            if (*state == *s) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     vector<State> traceBack(const Step<cell>& goalState,const vector<Step<State>*>& visited)const{
         vector<State> traceSolution;
         const Step<State>* current = &goalState;
@@ -40,7 +49,7 @@ public:
             }
             list<Step<State>> successors = searchable->getSuccessors(*pointerToN);
             for(Step<State>& s: successors) {
-                if(find(visited.begin(), visited.end(), &s) != visited.end()){
+                if(!isVisited(&s, visited)){
                     container.push(s);
                     visited.push_back(new Step<State>(s));
                 }
