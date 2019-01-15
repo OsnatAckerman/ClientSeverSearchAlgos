@@ -16,6 +16,7 @@ void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
     int  new_socket, valread;
     struct sockaddr_in address;
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    int counterClient = 0;
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(port);
@@ -23,12 +24,15 @@ void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
     int addrlen = sizeof(address);
     //!=stop
     while (true) {
-        listen(server_fd, 5);
-
         timeval timeout;
-        timeout.tv_sec = 50;
-        timeout.tv_usec = 0;
-
+        listen(server_fd, 5);
+     if(counterClient == 0){
+         timeout.tv_sec = 0;
+         timeout.tv_usec = 0;
+     }else{
+         timeout.tv_sec = 1;
+         timeout.tv_usec = 0;
+     }
         setsockopt(server_fd, SOL_SOCKET, SO_RCVTIMEO, (char *) &timeout, sizeof(timeout));
         (new_socket = accept(server_fd, (struct sockaddr *) &address,
                              (socklen_t *) &addrlen));
@@ -38,10 +42,8 @@ void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
                 //exit(2);
                 break;
             } else {
-                cout<<"jj"<<endl;
-                //perror("accept");
-                // exit(EXIT_FAILURE);
-                break;
+                perror("accept");
+                 exit(EXIT_FAILURE);
             }
         }
 
@@ -54,6 +56,7 @@ void MyParallelServer:: open(int port, ClientHandle* clientHandler) {
             exit(1);
         }
         this->victor.push_back(thread);
+        counterClient++;
     }
 }
 

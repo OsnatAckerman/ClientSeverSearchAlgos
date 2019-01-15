@@ -1,0 +1,27 @@
+//
+// Created by shira on 1/15/19.
+//
+
+#ifndef UNTITLED4_CONTAINERSTACK_H
+#define UNTITLED4_CONTAINERSTACK_H
+
+#include "container.h"
+using namespace std;
+#include <stack>
+template <class E>
+class ContainerStack :public Container<E>{
+    stack<E> stack1;
+public:
+    void pop(){
+        this->stack1.pop();
+    }
+    void push(const E& element){
+        this->stack1.push(element);
+    }
+    E& look(){
+        return this->stack1.top();
+    }
+};
+
+
+#endif //UNTITLED4_CONTAINERSTACK_H
