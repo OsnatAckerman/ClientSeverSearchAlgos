@@ -33,7 +33,7 @@ class Astar : public  SearcherAbstruct<State> {
 public:
     struct CompState {
         bool operator()(Step<State>& first, Step<State>& second) {
-            return (first.getFHeuristics() > second.getFHeuristics());
+            return (first.getHeuristic() > second.getHeuristic());
         }
     }Com;
 
@@ -43,7 +43,7 @@ public:
         auto f = searchable->getInitState();
         f.setHeuristic(0);
         openList.push_back(f);
-        while(openList.amountOfElement() > 0) {
+        while(openList.size() > 0) {
             Step<State> n = openList.back();
             //this->numEvaluate++;
             openList.pop_back();
@@ -57,9 +57,15 @@ public:
             for(Step<State>& s: successors) {
                 if(closed.find(&s) != closed.end()){
                     continue;
-                } else if(Step<State>* spos = openList.find(s)){
-                    if( s.getHeuristic() < spos->getHeuristic()) {
-                        updatePriority(s, openList);
+                } else if(openList.end() != find(openList.begin(), openList.end(),s)){
+                    auto it = find(openList.begin(), openList.end(),s);
+                    long index = distance(openList.begin(), it);
+                    Step<State> sInOpen = openList.at(index);
+                    if( s.getHeuristic() < sInOpen.getHeuristic()) {
+                        sInOpen.setParent(*s.getParent());
+                        sInOpen.setCost(s.getCost());
+                        sInOpen.setHeuristic(s.getHeuristic());
+                        sort(openList.begin(),openList.end(),Com);
                     }
                 } else {
                     openList.push_back(s);
@@ -68,23 +74,16 @@ public:
             }
 
         }
-        vector<Step<State>> NoSolution = {};
+        vector<State> NoSolution = {};
         return NoSolution;
     }
 
-    void updatePriority(Step<State>& s, vector<Step<State>> openList) const{
-        Step<State>* findS = openList.find(s);
-        findS->setParent(*s.getParent());
-        findS->setCost(s.getCost());
-        findS->setHeuristic(s.getHeuristic());
-        sort(openList.begin(),openList.end(),Com);
-    }
 
-    void calFHeuristics(list<Step<State>> successors,Step<State>& goalState) {
-        for(auto& s : successors){
+    void calFHeuristics(list<Step<State>>& successors,const Step<State>& goalState) const{
+        for(Step<State>& s : successors){
             double f, h, g;
-            h = abs(s->getState().first - goalState->getState().first) +
-                abs(s->getState().second - goalState->getState().second);
+            h = abs(s.getState().first - goalState.getState().first) +
+                abs(s.getState().second - goalState.getState().second);
             s.setHeuristic(h);
         }
     }

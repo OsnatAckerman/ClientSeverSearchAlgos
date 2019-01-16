@@ -75,7 +75,7 @@ public:
         this->comeFrom = oldStep.comeFrom;
         return *this;
     }
-    double getHeuristic(){
+    double getHeuristic() const{
         return this->Heuristic;
     }
     void setHeuristic(double h){
