@@ -15,6 +15,7 @@ class Step {
     State state;
     double cost = 0;
     const Step<State>* comeFrom = nullptr;
+    double Heuristic = 0;
 public:
 
     explicit Step<State>(const State& state) {
@@ -74,7 +75,12 @@ public:
         this->comeFrom = oldStep.comeFrom;
         return *this;
     }
-
+    double getHeuristic(){
+        return this->Heuristic;
+    }
+    void setHeuristic(double h){
+        this->Heuristic = h;
+    }
 
 };
 
