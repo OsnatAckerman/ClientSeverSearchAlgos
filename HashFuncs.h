@@ -9,6 +9,8 @@
 #include "Step.h"
 #include <string>
 #include "To_String.h"
+#include "MatrixSearchable.h"
+#include <sstream>
 
 using cell = pair<int,int>;
 

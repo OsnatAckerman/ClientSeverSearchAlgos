@@ -12,6 +12,7 @@ class ClientHandler{
 
 public:
     virtual void handleClient(int sock_id) = 0;
+    virtual ~ClientHandler() = default;
 
 };
 

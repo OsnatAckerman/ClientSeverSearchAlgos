@@ -23,6 +23,9 @@ public:
     MyMatrixClientHandler(Searcher<cell>* searcher, CacheManager<MatrixSearchable, vector<cell>>* cm);
     void handleClient(int sock_id) override;
     static string fromREsultToString(const vector<cell>& result);
+    ~MyMatrixClientHandler() {
+        delete this->solver;
+    }
 
 };
 

@@ -9,6 +9,7 @@ void* start(void *myParams){
     my_data = (arg_struct *) myParams;
     my_data->clientHandle->handleClient(my_data->new_sock);
     close(my_data->new_sock);
+    delete my_data;
 }
 
 
@@ -42,12 +43,12 @@ void MyParallelServer:: open(int port, ClientHandler* clientHandler) {
                              (socklen_t *) &addrlen));
         if (new_socket < 0) {
             if (errno == EWOULDBLOCK) {
-                cout << "timeout!" << endl;
+                //cout << "timeout!" << endl;
                 break;
             } else {
                 //perror("accept");
-                 //exit(EXIT_FAILURE);
-                 break;
+                //exit(EXIT_FAILURE);
+                break;
             }
         }
 

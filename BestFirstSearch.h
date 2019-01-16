@@ -28,11 +28,7 @@ class BestFirstSearch : public  SearcherAbstruct<State>{
             current = current->getParent();
         }
         reverse(traceSolution.begin(), traceSolution.end());
-        if(!closed.empty()) {
-            for (auto &x: closed) {
-                delete x;
-            }
-        }
+        freeClosed(closed);
         return traceSolution;
     }
 
@@ -74,12 +70,18 @@ public:
                 }
             }
         }
-
+        vector<State> NoSolution = {};
+        freeClosed(closed);
+        return NoSolution;
 
     }
 
-    ~BestFirstSearch(){
-
+    void freeClosed(const unordered_set<Step<State>*>& closed) const{
+        if(!closed.empty()) {
+            for (Step<State>* x: closed) {
+                delete x;
+            }
+        }
     }
 };
 

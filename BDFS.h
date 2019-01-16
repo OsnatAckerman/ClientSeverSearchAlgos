@@ -27,11 +27,7 @@ public:
             current = current->getParent();
         }
         reverse(traceSolution.begin(), traceSolution.end());
-        if(!visited.empty()) {
-            for (auto &x: visited) {
-                delete x;
-            }
-        }
+        freeClosed(visited);
         return traceSolution;
     }
     vector<State> search(Searchable<State>* searchable) const{
@@ -53,6 +49,18 @@ public:
                     container.push(s);
                     visited.push_back(new Step<State>(s));
                 }
+            }
+        }
+        freeClosed(visited);
+        vector<State> noSolution = {};
+        return noSolution;
+
+
+    }
+    void freeClosed(const vector<Step<State>*>& visited) const{
+        if(!visited.empty()) {
+            for (Step<State>* x: visited) {
+                delete x;
             }
         }
     }
